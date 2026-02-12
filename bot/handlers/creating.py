@@ -16,18 +16,24 @@ async def start_job_creation(message: Message, state: FSMContext):
 @router.message(JobCreationState.description)
 async def process_description(message: Message, state: FSMContext):
     await state.update_data(description=message.text)
+    await state.set_state(JobCreationState.start_time)
+    await message.answer("Когда старт работ?")
+
+@router.message(JobCreationState.start_time)
+async def process_start_time(message: Message, state: FSMContext):
+    await state.update_data(start_time=message.text)
+    await state.set_state(JobCreationState.deadline)
+    await message.answer("Сроки выполнения?")
+
+@router.message(JobCreationState.deadline)
+async def process_deadline(message: Message, state: FSMContext):
+    await state.update_data(deadline=message.text)
     await state.set_state(JobCreationState.payment)
     await message.answer("Сколько платите?")
 
 @router.message(JobCreationState.payment)
 async def process_payment(message: Message, state: FSMContext):
     await state.update_data(payment=message.text)
-    await state.set_state(JobCreationState.time_required)
-    await message.answer("Когда нужно выполнить работу?")
-
-@router.message(JobCreationState.time_required)
-async def process_time(message: Message, state: FSMContext):
-    await state.update_data(time_required=message.text)
     await state.set_state(JobCreationState.people_count)
     await message.answer("Сколько человек нужно? (введите число)")
 
@@ -41,8 +47,9 @@ async def process_people_count(message: Message, state: FSMContext):
     async with async_session() as session:
         new_job = Job(
             description=data['description'],
+            start_time=data['start_time'],
+            deadline=data['deadline'],
             payment=data['payment'],
-            time_required=data['time_required'],
             people_count=int(message.text)
         )
         session.add(new_job)

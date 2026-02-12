@@ -15,7 +15,8 @@ class Job(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     description: Mapped[str] = mapped_column(Text)
     payment: Mapped[str] = mapped_column(String(255))
-    time_required: Mapped[str] = mapped_column(String(255))
+    start_time: Mapped[str] = mapped_column(String(255))
+    deadline: Mapped[str] = mapped_column(String(255))
     people_count: Mapped[int] = mapped_column(Integer)
 
 async def init_db():
