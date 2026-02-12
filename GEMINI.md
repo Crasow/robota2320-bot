@@ -32,8 +32,9 @@ Implementation: `bot/handlers/creating.py`
 1.  **Trigger:** User sends "📢 Есть работа".
 2.  **Flow (FSM):**
     *   **Description:** "Опишите работу (кратко)"
+    *   **Start Time:** "Когда старт работ?"
+    *   **Deadline:** "Сроки выполнения?"
     *   **Payment:** "Сколько платите?"
-    *   **Time:** "Когда нужно выполнить работу?"
     *   **People Count:** "Сколько человек нужно?"
 3.  **Completion:** Data is saved to the `jobs` table in the database.
 
