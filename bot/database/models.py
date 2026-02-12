@@ -18,6 +18,7 @@ class Job(Base):
     start_time: Mapped[str] = mapped_column(String(255))
     deadline: Mapped[str] = mapped_column(String(255))
     people_count: Mapped[int] = mapped_column(Integer)
+    location: Mapped[str] = mapped_column(String(255))
 
 async def init_db():
     async with engine.begin() as conn:

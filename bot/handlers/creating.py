@@ -17,7 +17,7 @@ async def start_job_creation(message: Message, state: FSMContext):
 async def process_description(message: Message, state: FSMContext):
     await state.update_data(description=message.text)
     await state.set_state(JobCreationState.start_time)
-    await message.answer("Когда старт работ?")
+    await message.answer("Когда приступить к работе?")
 
 @router.message(JobCreationState.start_time)
 async def process_start_time(message: Message, state: FSMContext):
@@ -29,7 +29,7 @@ async def process_start_time(message: Message, state: FSMContext):
 async def process_deadline(message: Message, state: FSMContext):
     await state.update_data(deadline=message.text)
     await state.set_state(JobCreationState.payment)
-    await message.answer("Сколько платите?")
+    await message.answer("Какой бюджет на работу?")
 
 @router.message(JobCreationState.payment)
 async def process_payment(message: Message, state: FSMContext):
@@ -43,6 +43,12 @@ async def process_people_count(message: Message, state: FSMContext):
         await message.answer("Пожалуйста, введите число.")
         return
         
+    await state.update_data(people_count=int(message.text))
+    await state.set_state(JobCreationState.location)
+    await message.answer("Адресс работы?")
+
+@router.message(JobCreationState.location)
+async def process_location(message: Message, state: FSMContext):
     data = await state.get_data()
     async with async_session() as session:
         new_job = Job(
@@ -50,7 +56,8 @@ async def process_people_count(message: Message, state: FSMContext):
             start_time=data['start_time'],
             deadline=data['deadline'],
             payment=data['payment'],
-            people_count=int(message.text)
+            people_count=data['people_count'],
+            location=message.text
         )
         session.add(new_job)
         await session.commit()

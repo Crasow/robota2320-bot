@@ -36,6 +36,7 @@ def format_jobs(jobs, start_index=1):
             f"⌛ Срок: {job.deadline}\n"
             f"💰 Оплата: {job.payment}\n"
             f"👥 Требуется: {job.people_count} чел.\n"
+            f"📍 Локация: {job.location}\n"
             f"{'-'*20}\n"
         )
     return text

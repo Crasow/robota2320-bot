@@ -6,3 +6,4 @@ class JobCreationState(StatesGroup):
     deadline = State()
     payment = State()
     people_count = State()
+    location = State()

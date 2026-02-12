@@ -36,6 +36,7 @@ Implementation: `bot/handlers/creating.py`
     *   **Deadline:** "Сроки выполнения?"
     *   **Payment:** "Сколько платите?"
     *   **People Count:** "Сколько человек нужно?"
+    *   **Location:** "Где территориально?"
 3.  **Completion:** Data is saved to the `jobs` table in the database.
 
 ### Job Search ("🔎 Ищу работу")
