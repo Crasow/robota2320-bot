@@ -57,7 +57,8 @@ async def process_location(message: Message, state: FSMContext):
             deadline=data['deadline'],
             payment=data['payment'],
             people_count=data['people_count'],
-            location=message.text
+            location=message.text,
+            user_id=message.from_user.id
         )
         session.add(new_job)
         await session.commit()

@@ -7,11 +7,23 @@ from bot.keyboards.builders import get_main_menu_kb
 router = Router()
 
 @router.message(Command("start"))
-async def cmd_start(message: Message):
+async def cmd_start(message: Message, state: FSMContext):
+    await state.clear()
     await message.answer(
         "Привет! Я бот для поиска работы. Выберите действие:",
         reply_markup=get_main_menu_kb()
     )
+
+@router.message(Command("cancel"))
+@router.message(F.text.casefold() == "отмена")
+async def cmd_cancel(message: Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        await message.answer("Нет активных действий для отмены.", reply_markup=get_main_menu_kb())
+        return
+
+    await state.clear()
+    await message.answer("Действие отменено.", reply_markup=get_main_menu_kb())
 
 @router.message(F.text == "🗑 Очистить историю")
 async def clear_history(message: Message, state: FSMContext):
